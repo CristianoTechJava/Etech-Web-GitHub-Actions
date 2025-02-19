@@ -6,7 +6,7 @@ on:
     # - cron: "*/5 * * * *"
   workflow_dispatch:
 jobs:
-  jobs-E2E:
+  e2e-test:
     runs-on: ubuntu-latest
 
     steps:
