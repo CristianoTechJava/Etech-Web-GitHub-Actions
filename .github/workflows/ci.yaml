@@ -21,3 +21,29 @@ jobs:
 
       - name: Execute E2E testes
         run: mvn clean install
+
+      - name: Get Allure history
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Generate Allure Report
+        uses: simple-elf/alure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure-results: target/allure-results
+          gh-pages: gh-pages
+          allure-report: allure-report
+          allure-history: allure-history
+
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history
